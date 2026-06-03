@@ -11,7 +11,7 @@ class EnrollmentController extends Controller
             'course_id' => 'required|exists:courses,id'
         ]);
         $enroll = Enrollment::create([
-            'student_id' => $request->user()->id,
+            'user_id' => $request->user()->id,
             'course_id' => $request->course_id
         ]);
 
@@ -24,7 +24,7 @@ class EnrollmentController extends Controller
     public function myCourses(Request $request)
     {
         return response()->json(
-            Enrollment::where('student_id', $request->user()->id)->get()
+            Enrollment::where('user_id', $request->user()->id)->get()
         );
     }
 }

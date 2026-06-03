@@ -13,14 +13,13 @@ class StudentController extends Controller
     // كورسات الطالب
     public function myCourses(Request $request)
     {
-        $courses = Enrollment::where('student_id', $request->user()->id)
+        $courses = Enrollment::where('user_id', $request->user()->id)
             ->with('course')
             ->get();
 
         return response()->json($courses);
     }
 
-    // تسجيل في كورس
     public function enroll(Request $request)
     {
         $request->validate([
@@ -28,7 +27,7 @@ class StudentController extends Controller
         ]);
 
         $enroll = Enrollment::create([
-            'student_id' => $request->user()->id,
+            'user_id' => $request->user()->id,
             'course_id' => $request->course_id
         ]);
 
