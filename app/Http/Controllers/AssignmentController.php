@@ -7,15 +7,34 @@ use App\Models\Assignment;
 
 class AssignmentController extends Controller
 {
+
+    public function index()
+    {
+        $assignments = Assignment::with('course')
+            ->latest()
+            ->get();
+
+        return response()->json($assignments);
+    }
+
+    public function show($id)
+    {
+        $assignment = Assignment::with([
+            'course',
+            'submissions'
+        ])->findOrFail($id);
+
+        return response()->json($assignment);
+    }
     public function create(Request $request)
     {
         $request->validate([
-            'course_id' => 'required',
+            'id' => 'required',
             'title' => 'required'
         ]);
 
         $assignment = Assignment::create([
-            'course_id' => $request->course_id,
+            'id' => $request->course_id,
             'title' => $request->title,
             'description' => $request->description
         ]);
