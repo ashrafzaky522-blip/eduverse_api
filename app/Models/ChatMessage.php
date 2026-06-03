@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class ChatMessage extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'message',
+        'response'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

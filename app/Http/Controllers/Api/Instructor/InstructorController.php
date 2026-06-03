@@ -138,4 +138,23 @@ class InstructorController extends Controller
             'assignment' => $assignment
         ]);
     }
+
+    public function index()
+    {
+        $assignments = Assignment::with('course')
+            ->latest()
+            ->get();
+
+        return response()->json($assignments);
+    }
+
+    public function show($id)
+    {
+        $assignment = Assignment::with([
+            'course',
+            'submissions'
+        ])->findOrFail($id);
+
+        return response()->json($assignment);
+    }
 }
