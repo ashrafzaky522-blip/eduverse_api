@@ -34,7 +34,7 @@ class AssignmentController extends Controller
         ]);
 
         $assignment = Assignment::create([
-            'id' => $request->course_id,
+            'id' => $request->id,
             'title' => $request->title,
             'description' => $request->description
         ]);
