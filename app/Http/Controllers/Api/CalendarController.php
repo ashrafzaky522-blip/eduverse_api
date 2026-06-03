@@ -8,17 +8,29 @@ use App\Models\CalendarEvent;
 
 class CalendarController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(CalendarEvent::all());
+        return response()->json(
+            CalendarEvent::where('user_id', $request->user()->id)->get()
+        );
     }
+
     public function create(Request $request)
     {
-        $calendar = CalendarEvent::create([
+        $request->validate([
+            'title' => 'required|string',
+            'event_date' => 'required|date'
+        ]);
+
+        $event = CalendarEvent::create([
+            'user_id' => $request->user()->id,
             'title' => $request->title,
             'event_date' => $request->event_date
         ]);
 
-        return response()->json($calendar);
+        return response()->json([
+            'message' => 'Event created successfully',
+            'event' => $event
+        ]);
     }
 }
