@@ -122,13 +122,13 @@ class InstructorController extends Controller
     public function createAssignment(Request $request)
     {
         $request->validate([
-            'course_id' => 'required|exists:courses,id',
+            'id' => 'required|exists:id',
             'title' => 'required|string',
             'description' => 'nullable|string'
         ]);
 
         $assignment = Assignment::create([
-            'course_id' => $request->course_id,
+            'id' => $request->id,
             'title' => $request->title,
             'description' => $request->description
         ]);

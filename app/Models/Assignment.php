@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Assignment extends Model
 {
     protected $fillable = [
-    'course_id',
+    'id',
     'title',
     'description'
 ];
