@@ -16,6 +16,7 @@ class TaskController extends Controller
     {
         $request->validate([
             'course_id' => 'required|exists:courses,id',
+            'user_id' => 'required|exists:users,id',
             'title' => 'required|string',
             'description' => 'nullable|string',
             'due_date' => 'nullable|date'
@@ -27,6 +28,12 @@ class TaskController extends Controller
             'message' => 'Task created successfully',
             'task' => $task
         ]);
+    }
+    public function show($id)
+    {
+        $task = Task::findOrFail($id);
+
+        return response()->json($task);
     }
     public function submit($id)
     {

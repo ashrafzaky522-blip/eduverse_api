@@ -12,7 +12,7 @@ class ProgressController extends Controller
     {
         $progress = Progress::updateOrCreate(
             [
-                'student_id' => $request->user()->id,
+                'user_id' => $request->user()->id,
                 'course_id' => $request->course_id
             ],
             [
@@ -26,7 +26,7 @@ class ProgressController extends Controller
     public function myProgress(Request $request)
     {
         return response()->json(
-            Progress::where('student_id', $request->user()->id)->get()
+            Progress::where('user_id', $request->user()->id)->get()
         );
     }
 }
