@@ -21,20 +21,15 @@ class ChatController extends Controller
 
         // حفظ رسالة المستخدم
         ChatMessage::create([
-            'user_id' => $user->id,
-            'sender' => 'user',
-            'message' => $userMessage
+            'user_id' => auth()->id(),
+            'message' => $request->message,
+            'sender' => 'user'
         ]);
 
-        // ✅ الرد الذكي (في التطبيق الحقيقي نربطه بـ OpenAI API)
-        // هنا هنحاكي الرد بشكل مبدئي:
-        $botReply = $this->getSmartReply($userMessage);
-
-        // حفظ رد البوت
         ChatMessage::create([
-            'user_id' => $user->id,
-            'sender' => 'bot',
-            'message' => $botReply
+            'user_id' => auth()->id(),
+            'message' => $botResponse,
+            'sender' => 'bot'
         ]);
 
         return response()->json([

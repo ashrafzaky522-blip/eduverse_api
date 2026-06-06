@@ -15,8 +15,20 @@ class CreateAssignmentsTable extends Migration
     {
         Schema::create('assignments', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('course_id')
+                ->constrained()
+                ->onDelete('cascade');
+
             $table->string('title');
             $table->text('description')->nullable();
+
+            $table->dateTime('due_date')->nullable();
+
+            $table->integer('total_points')->default(100);
+
+            $table->boolean('allow_late')->default(false);
+
             $table->timestamps();
         });
     }

@@ -10,13 +10,12 @@ class AssignmentController extends Controller
 
     public function index()
     {
-        $assignments = Assignment::with('course')
-            ->latest()
-            ->get();
+        $assignments = Assignment::withCount([
+            'submissions as submitted_count'
+        ])->get();
 
         return response()->json($assignments);
     }
-
     public function show($id)
     {
         $assignment = Assignment::with([

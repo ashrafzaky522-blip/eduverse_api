@@ -1,22 +1,28 @@
 <?php
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
+use App\Models\Assignment;
 use App\Models\Course;
+use App\Models\Enrollment;
 use App\Models\User;
 class AnalyticsController extends Controller
 {
     public function dashboard()
     {
         return response()->json([
-            'users' => User::count(),
-            'courses' => Course::count()
+            'students' => User::where('role', 'student')->count(),
+            'courses' => Course::count(),
+            'enrollments' => Enrollment::count(),
+            'assignments' => Assignment::count()
         ]);
     }
 
     public function atRiskStudents()
     {
-        return response()->json([
-            'message' => 'At risk students list'
-        ]);
+        $students = User::where('role', 'student')
+            ->withCount('enrollments')
+            ->get();
+
+        return response()->json($students);
     }
 }

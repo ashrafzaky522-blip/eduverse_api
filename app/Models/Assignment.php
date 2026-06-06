@@ -10,18 +10,22 @@ class Assignment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id',
+        'course_id',
         'title',
-        'description'
+        'description',
+        'due_date',
+        'total_points',
+        'allow_late'
     ];
 
     public function course()
     {
         return $this->belongsTo(Course::class);
     }
-
     public function submissions()
     {
-        return $this->hasMany(AssignmentSubmission::class);
+        return $this->hasMany(
+            AssignmentSubmission::class
+        );
     }
 }

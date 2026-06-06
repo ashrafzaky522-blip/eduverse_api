@@ -205,9 +205,15 @@ Route::middleware('auth:sanctum')->group(function () {
         |--------------------------------------------------------------------------
         */
 
-        Route::get('/analytics/dashboard', [AnalyticsController::class, 'dashboard']);
+        Route::get(
+            '/analytics/dashboard',
+            [AnalyticsController::class, 'dashboard']
+        );
 
-        Route::get('/analytics/risk', [AnalyticsController::class, 'atRiskStudents']);
+        Route::get(
+            '/analytics/risk',
+            [AnalyticsController::class, 'atRiskStudents']
+        );
 
         /*
         |--------------------------------------------------------------------------

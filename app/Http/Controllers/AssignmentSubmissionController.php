@@ -4,6 +4,16 @@ use App\Models\AssignmentSubmission;
 use Illuminate\Http\Request;
 class AssignmentSubmissionController extends Controller
 {
+
+
+    public function index($id)
+    {
+        $submissions = AssignmentSubmission::with('student')
+            ->where('assignment_id', $id)
+            ->get();
+
+        return response()->json($submissions);
+    }
     public function submit(Request $request)
     {
         $submission = AssignmentSubmission::create([

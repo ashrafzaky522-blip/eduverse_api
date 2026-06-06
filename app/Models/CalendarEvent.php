@@ -12,8 +12,9 @@ class CalendarEvent extends Model
     protected $fillable = [
         'user_id',
         'title',
-        'description',
-        'event_date'
+        'event_date',
+        'time',
+        'location'
     ];
 
     protected $casts = [

@@ -18,19 +18,20 @@ class CalendarController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'title' => 'required|string',
-            'event_date' => 'required|date'
+            'title' => 'required',
+            'event_date' => 'required|date',
+            'time' => 'nullable',
+            'location' => 'nullable|string'
         ]);
 
         $event = CalendarEvent::create([
-            'user_id' => $request->user()->id,
+            'user_id' => auth()->id(),
             'title' => $request->title,
-            'event_date' => $request->event_date
+            'event_date' => $request->event_date,
+            'time' => $request->time,
+            'location' => $request->location
         ]);
 
-        return response()->json([
-            'message' => 'Event created successfully',
-            'event' => $event
-        ]);
+        return response()->json($event);
     }
 }
