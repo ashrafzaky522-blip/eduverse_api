@@ -239,6 +239,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/courses', [CourseController::class, 'index']);
 
     Route::get('/courses/{id}/lessons', [CourseController::class, 'lessons']);
+    Route::get('/courses/{id}', [CourseController::class, 'show']);
 
     /*
     |--------------------------------------------------------------------------
