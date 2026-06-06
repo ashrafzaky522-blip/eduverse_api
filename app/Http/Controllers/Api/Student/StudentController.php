@@ -13,9 +13,10 @@ class StudentController extends Controller
     // كورسات الطالب
     public function myCourses(Request $request)
     {
-        $courses = Enrollment::where('user_id', $request->user()->id)
-            ->with('course')
-            ->get();
+        $courses = Enrollment::with('course')
+            ->where('user_id', $request->user()->id)
+            ->get()
+            ->pluck('course');
 
         return response()->json($courses);
     }
