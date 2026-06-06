@@ -14,6 +14,14 @@ class CourseController extends Controller
 
     public function show($id)
     {
-        return response()->json(Course::findOrFail($id));
+        $course = Course::with('lessons')->findOrFail($id);
+
+        return response()->json($course);
+    }
+    public function lessons($id)
+    {
+        $course = Course::with('lessons')->findOrFail($id);
+
+        return response()->json($course->lessons);
     }
 }
