@@ -161,6 +161,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/assignments/grade/{id}', [AssignmentSubmissionController::class, 'grade']);
 
         Route::get('/assignments/{id}/submissions', [AssignmentSubmissionController::class, 'index']);
+
+        Route::get('/instructor/reports', [InstructorController::class, 'reports']);
     });
 
     /*
@@ -214,6 +216,8 @@ Route::middleware('auth:sanctum')->group(function () {
             '/analytics/risk',
             [AnalyticsController::class, 'atRiskStudents']
         );
+
+        Route::get('/admin/reports', [AdminController::class, 'reports']);
 
         /*
         |--------------------------------------------------------------------------

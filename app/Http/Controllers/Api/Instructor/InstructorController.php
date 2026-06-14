@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Instructor;
 
 use App\Http\Controllers\Controller;
+use App\Models\Enrollment;
+use App\Models\Quiz;
 use Illuminate\Http\Request;
 
 use App\Models\Course;
@@ -156,5 +158,19 @@ class InstructorController extends Controller
         ])->findOrFail($id);
 
         return response()->json($assignment);
+    }
+    public function reports(Request $request)
+    {
+        $courses = Course::where(
+            'user_id',
+            $request->user()->id
+        )->pluck('id');
+
+        return response()->json([
+            'courses' => $courses->count(),
+            'assignments' => Assignment::whereIn('course_id', $courses)->count(),
+            'quizzes' => Quiz::whereIn('course_id', $courses)->count(),
+            'students' => Enrollment::whereIn('course_id', $courses)->count()
+        ]);
     }
 }

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Assignment;
 use App\Models\Enrollment;
+use App\Models\Quiz;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Course;
@@ -60,6 +62,18 @@ class AdminController extends Controller
             'total_instructors' => User::where('role', 'instructor')->count(),
             'total_courses' => Course::count(),
             'total_enrollments' => Enrollment::count(),
+        ]);
+    }
+    public function reports()
+    {
+        return response()->json([
+            'users' => User::count(),
+            'students' => User::where('role', 'student')->count(),
+            'instructors' => User::where('role', 'instructor')->count(),
+            'courses' => Course::count(),
+            'enrollments' => Enrollment::count(),
+            'assignments' => Assignment::count(),
+            'quizzes' => Quiz::count()
         ]);
     }
 
