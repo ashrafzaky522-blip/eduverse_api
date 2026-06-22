@@ -173,4 +173,18 @@ class InstructorController extends Controller
             'students' => Enrollment::whereIn('course_id', $courses)->count()
         ]);
     }
+
+    public function students(Request $request)
+{
+    $courseIds = Course::where(
+        'user_id',
+        $request->user()->id
+    )->pluck('id');
+
+    $students = Enrollment::with('user','course')
+        ->whereIn('course_id',$courseIds)
+        ->get();
+
+    return response()->json($students);
+}
 }

@@ -20,6 +20,8 @@ use App\Http\Controllers\Api\AnalyticsController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\ProgressController;
 use App\Http\Controllers\Api\QuizController;
+use App\Http\Controllers\Api\ActivityController;
+use App\Http\Controllers\Api\AnnouncementController;
 use App\Http\Controllers\AssignmentController;
 
 use App\Http\Controllers\Api\Admin\AdminController;
@@ -97,6 +99,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/courses/{id}', [InstructorController::class, 'updateCourse']);
 
         Route::delete('/courses/{id}', [InstructorController::class, 'deleteCourse']);
+        
+         Route::get('/reports', [InstructorController::class, 'reports']);
+
+         Route::get(
+    '/student',
+    [InstructorController::class,'students']
+);
 
         /*
         |--------------------------------------------------------------------------
@@ -162,7 +171,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('/assignments/{id}/submissions', [AssignmentSubmissionController::class, 'index']);
 
-        Route::get('/instructor/reports', [InstructorController::class, 'reports']);
+       
     });
 
     /*
@@ -217,7 +226,7 @@ Route::middleware('auth:sanctum')->group(function () {
             [AnalyticsController::class, 'atRiskStudents']
         );
 
-        Route::get('/admin/reports', [AdminController::class, 'reports']);
+        Route::get('/reports', [AdminController::class, 'reports']);
 
         /*
         |--------------------------------------------------------------------------
@@ -331,6 +340,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/progress', [ProgressController::class, 'myProgress']);
 });
+
+Route::get('/announcements', [AnnouncementController::class,'index']);
+
+Route::get('/activities', [ActivityController::class,'index']);
+
+Route::post('/activities/{id}/register', [ActivityController::class,'register']);
 
 /*
 |--------------------------------------------------------------------------
