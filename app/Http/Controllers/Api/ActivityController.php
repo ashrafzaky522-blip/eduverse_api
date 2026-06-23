@@ -15,16 +15,16 @@ class ActivityController extends Controller
     }
 
     public function register($id)
-{
-    $activity = Activity::findOrFail($id);
+    {
+        $activity = Activity::findOrFail($id);
 
-    ActivityRegistration::firstOrCreate([
-        'activity_id' => $activity->id,
-        'user_id' => auth()->id()
-    ]);
+        ActivityRegistration::firstOrCreate([
+            'activity_id' => $activity->id,
+            'user_id' => auth()->id()
+        ]);
 
-    return response()->json([
-        'message' => 'Registered successfully'
-    ]);
-}
+        return response()->json([
+            'message' => 'Registered successfully'
+        ]);
+    }
 }

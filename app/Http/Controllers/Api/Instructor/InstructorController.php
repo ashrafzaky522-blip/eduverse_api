@@ -175,16 +175,16 @@ class InstructorController extends Controller
     }
 
     public function students(Request $request)
-{
-    $courseIds = Course::where(
-        'user_id',
-        $request->user()->id
-    )->pluck('id');
+    {
+        $courseIds = Course::where(
+            'user_id',
+            $request->user()->id
+        )->pluck('id');
 
-    $students = Enrollment::with('user','course')
-        ->whereIn('course_id',$courseIds)
-        ->get();
+        $students = Enrollment::with('user', 'course')
+            ->whereIn('course_id', $courseIds)
+            ->get();
 
-    return response()->json($students);
-}
+        return response()->json($students);
+    }
 }

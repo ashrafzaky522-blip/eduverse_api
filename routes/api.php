@@ -99,13 +99,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/courses/{id}', [InstructorController::class, 'updateCourse']);
 
         Route::delete('/courses/{id}', [InstructorController::class, 'deleteCourse']);
-        
-         Route::get('/reports', [InstructorController::class, 'reports']);
 
-         Route::get(
-    '/student',
-               [InstructorController::class,'students']
-);
+        Route::get('/reports', [InstructorController::class, 'reports']);
+
+        Route::get(
+            '/student',
+            [InstructorController::class, 'students']
+        );
 
         /*
         |--------------------------------------------------------------------------
@@ -171,7 +171,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('/assignments/{id}/submissions', [AssignmentSubmissionController::class, 'index']);
 
-       
+
     });
 
     /*
@@ -341,11 +341,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/progress', [ProgressController::class, 'myProgress']);
 });
 
-Route::get('/announcements', [AnnouncementController::class,'index']);
+Route::get('/announcements', [AnnouncementController::class, 'index']);
 
-Route::get('/activities', [ActivityController::class,'index']);
+Route::get('/activities', [ActivityController::class, 'index']);
 
-Route::post('/activities/{id}/register', [ActivityController::class,'register']);
+Route::post('/activities/{id}/register', [ActivityController::class, 'register']);
 
 /*
 |--------------------------------------------------------------------------
