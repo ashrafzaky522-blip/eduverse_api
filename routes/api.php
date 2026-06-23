@@ -59,6 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/profile', [AuthController::class, 'updateProfile']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/activities/{id}/register', [ActivityController::class, 'register']);
 
     /*
     |--------------------------------------------------------------------------
@@ -345,7 +346,7 @@ Route::get('/announcements', [AnnouncementController::class, 'index']);
 
 Route::get('/activities', [ActivityController::class, 'index']);
 
-Route::post('/activities/{id}/register', [ActivityController::class, 'register']);
+
 
 /*
 |--------------------------------------------------------------------------
