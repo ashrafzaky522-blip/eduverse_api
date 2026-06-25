@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Instructor;
 
 use App\Http\Controllers\Controller;
+use App\Models\AssignmentSubmission;
 use App\Models\Enrollment;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
@@ -176,14 +177,41 @@ class InstructorController extends Controller
 
     public function students(Request $request)
     {
-        $courseIds = Course::where(
-            'user_id',
-            $request->user()->id
-        )->pluck('id');
+        // الكورسات الخاصة بالدكتور
+        $courseIds = $request->user()
+            ->courses()
+            ->pluck('id');
 
-        $students = Enrollment::with('user', 'course')
+        $students = Enrollment::with(['user', 'course'])
             ->whereIn('course_id', $courseIds)
-            ->get();
+            ->get()
+            ->map(function ($enrollment) {
+
+                $totalAssignments = Assignment::where(
+                    'course_id',
+                    $enrollment->course_id
+                )->count();
+
+                $submittedAssignments = AssignmentSubmission::where(
+                    'user_id',
+                    $enrollment->user_id
+                )
+                    ->whereIn(
+                        'assignment_id',
+                        Assignment::where('course_id', $enrollment->course_id)
+                            ->pluck('id')
+                    )
+                    ->count();
+
+                return [
+                    'student_id' => $enrollment->user->id,
+                    'name' => $enrollment->user->name,
+                    'email' => $enrollment->user->email,
+                    'course_name' => $enrollment->course->title,
+                    'submitted_assignments' => $submittedAssignments,
+                    'total_assignments' => $totalAssignments
+                ];
+            });
 
         return response()->json($students);
     }
