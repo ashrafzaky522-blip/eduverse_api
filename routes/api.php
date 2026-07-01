@@ -105,7 +105,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get(
             '/student',
-            [InstructorController::class, 'students']
+                   [InstructorController::class, 'students']
         );
 
         /*
