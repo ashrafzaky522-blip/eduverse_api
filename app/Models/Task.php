@@ -14,6 +14,7 @@ class Task extends Model
         'title',
 
         'description',
+        'course_id',
 
         'due_date',
 

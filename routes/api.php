@@ -88,7 +88,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/courses/{id}', [StudentController::class, 'showCourse']);
 
         Route::post(
-            '/student/tasks/create',
+            '/tasks/create',
             [StudentTaskController::class, 'create']
         );
     });

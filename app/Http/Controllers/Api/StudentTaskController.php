@@ -11,35 +11,36 @@ class StudentTaskController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'title'=>'required|string|max:255',
-            'description'=>'nullable|string',
-            'due_date'=>'required|date'
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'due_date' => 'required|date'
         ]);
 
-        $task=Task::create([
+        $task = Task::create([
 
-            'user_id'=>$request->user()->id,
+            'user_id' => $request->user()->id,
 
-            'title'=>$request->title,
+            'title' => $request->title,
+            'course_id' => $request->course_id,
 
-            'description'=>$request->description,
+            'description' => $request->description,
 
-            'due_date'=>$request->due_date,
+            'due_date' => $request->due_date,
 
-            'status'=>'pending',
+            'status' => 'pending',
 
-            'type'=>'personal'
+            'type' => 'personal'
 
         ]);
 
         return response()->json([
 
-            'success'=>true,
+            'success' => true,
 
-            'message'=>'Task created successfully',
+            'message' => 'Task created successfully',
 
-            'task'=>$task
+            'task' => $task
 
-        ],201);
+        ], 201);
     }
 }
