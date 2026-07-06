@@ -19,4 +19,13 @@ class Lesson extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    public function download($id)
+    {
+        $lesson = Lesson::findOrFail($id);
+
+        return response()->json([
+            'download_url' => asset('storage/' . $lesson->file_path)
+        ]);
+    }
 }

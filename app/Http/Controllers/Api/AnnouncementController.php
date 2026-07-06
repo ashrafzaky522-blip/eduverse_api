@@ -9,8 +9,9 @@ class AnnouncementController extends Controller
 {
     public function index()
     {
-        return response()->json(
-            Announcement::latest()->get()
-        );
+        return response()->json([
+            'success' => true,
+            'announcements' => Announcement::latest()->get()
+        ]);
     }
 }

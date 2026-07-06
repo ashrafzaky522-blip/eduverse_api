@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\Instructor\InstructorDashboardController;
+use App\Http\Controllers\Api\UploadController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -105,7 +107,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get(
             '/student',
-                   [InstructorController::class, 'students']
+            [InstructorController::class, 'students']
         );
 
         /*
@@ -171,6 +173,19 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/assignments/grade/{id}', [AssignmentSubmissionController::class, 'grade']);
 
         Route::get('/assignments/{id}/submissions', [AssignmentSubmissionController::class, 'index']);
+
+        Route::get('/students', [InstructorDashboardController::class, 'students']);
+
+        Route::get('/stats', [InstructorDashboardController::class, 'stats']);
+
+        Route::get('/tas', [InstructorDashboardController::class, 'tas']);
+
+
+        Route::get('/grade-distribution', [AnalyticsController::class, 'gradeDistribution']);
+
+        Route::get('/at-risk', [AnalyticsController::class, 'atRisk']);
+
+        Route::get('/performance-trend', [AnalyticsController::class, 'performanceTrend']);
 
 
     });
@@ -345,7 +360,17 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('/announcements', [AnnouncementController::class, 'index']);
 
 Route::get('/activities', [ActivityController::class, 'index']);
+Route::post(
+    '/upload',
+    [UploadController::class, 'upload']
+)
+    ->middleware('auth:sanctum');
 
+
+Route::get(
+    '/lessons/{id}/download',
+    [LessonController::class, 'download']
+);
 
 
 /*
