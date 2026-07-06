@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\FeedbackController;
 use App\Http\Controllers\Api\Instructor\InstructorDashboardController;
+use App\Http\Controllers\Api\StudentTaskController;
 use App\Http\Controllers\Api\UploadController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -56,6 +58,11 @@ Route::middleware('auth:sanctum')->group(function () {
     |--------------------------------------------------------------------------
     */
 
+    Route::post(
+        '/instructor/feedback',
+        [FeedbackController::class, 'send']
+    );
+
     Route::get('/user', [AuthController::class, 'user']);
 
     Route::put('/profile', [AuthController::class, 'updateProfile']);
@@ -79,6 +86,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // Show Course
         Route::get('/courses/{id}', [StudentController::class, 'showCourse']);
+
+        Route::post(
+            '/student/tasks/create',
+            [StudentTaskController::class, 'create']
+        );
     });
 
     /*
@@ -372,7 +384,8 @@ Route::get(
     [LessonController::class, 'download']
 );
 
-
+Route::middleware(['auth:sanctum', 'role:instructor,ta'])
+    ->post('/instructor/feedback', [FeedbackController::class, 'send']);
 /*
 |--------------------------------------------------------------------------
 | Fallback Route

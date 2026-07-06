@@ -6,12 +6,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
+
     protected $fillable = [
-        'course_id',
+
         'user_id',
+
         'title',
+
         'description',
+
         'due_date',
+
+        'status',
+
+        'type',
+
         'completed'
     ];
 
