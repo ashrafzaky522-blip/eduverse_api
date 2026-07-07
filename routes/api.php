@@ -92,7 +92,7 @@ Route::middleware('auth:sanctum')->group(function () {
             [StudentTaskController::class, 'create']
         );
         Route::get(
-            '/student/progress',
+            '/progress',
             [ProgressController::class, 'studentProgress']
         );
     });
