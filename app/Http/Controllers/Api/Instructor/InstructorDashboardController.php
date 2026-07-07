@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api\Instructor;
 
 use App\Http\Controllers\Controller;
+use App\Models\AssignmentSubmission;
+use App\Models\Progress;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class InstructorDashboardController extends Controller
@@ -52,21 +55,43 @@ class InstructorDashboardController extends Controller
     public function stats()
     {
 
-        $students = \App\Models\User::where('role', 'student')->count();
+        $totalStudents = User::where('role', 'student')->count();
 
-        $pending = \App\Models\AssignmentSubmission::whereNull('grade')->count();
+        $pending = AssignmentSubmission::whereNull('grade')->count();
 
-        $risk = \App\Models\Progress::where('progress', '<', 50)
+        $atRisk = Progress::where('progress', '<', 50)
             ->distinct('user_id')
             ->count();
 
+        $graded = AssignmentSubmission::whereNotNull('grade');
+
+        $passingRate = $graded->count()
+            ? round(($graded->where('grade', '>=', 60)->count() / $graded->count()) * 100, 2)
+            : 0;
+
+        $classAverage = round(
+            AssignmentSubmission::avg('grade') ?? 0,
+            2
+        );
+
+        $completionRate = round(
+            Progress::avg('progress') ?? 0,
+            2
+        );
+
         return response()->json([
 
-            "total_students" => $students,
+            "total_students" => $totalStudents,
 
             "pending_grading" => $pending,
 
-            "at_risk" => $risk
+            "at_risk" => $atRisk,
+
+            "passing_rate" => $passingRate,
+
+            "class_average" => $classAverage,
+
+            "completion_rate" => $completionRate
 
         ]);
 

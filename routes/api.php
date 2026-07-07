@@ -91,6 +91,10 @@ Route::middleware('auth:sanctum')->group(function () {
             '/tasks/create',
             [StudentTaskController::class, 'create']
         );
+        Route::get(
+            '/student/progress',
+            [ProgressController::class, 'studentProgress']
+        );
     });
 
     /*
@@ -193,9 +197,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/tas', [InstructorDashboardController::class, 'tas']);
 
 
-        Route::get('/grade-distribution', [AnalyticsController::class, 'gradeDistribution']);
+        Route::get('/analytics/grade-distribution', [AnalyticsController::class, 'gradeDistribution']);
 
-        Route::get('/at-risk', [AnalyticsController::class, 'atRisk']);
+        Route::get('/analytics/at-risk', [AnalyticsController::class, 'atRisk']);
 
         Route::get('/performance-trend', [AnalyticsController::class, 'performanceTrend']);
 

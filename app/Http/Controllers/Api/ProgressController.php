@@ -29,4 +29,22 @@ class ProgressController extends Controller
             Progress::where('user_id', $request->user()->id)->get()
         );
     }
+    public function studentProgress(Request $request)
+    {
+
+        $progress = Progress::where('user_id', $request->user()->id)->get();
+
+        return response()->json([
+
+            'success' => true,
+
+            'overall_progress' => round($progress->avg('progress'), 1),
+
+            'completed_lessons' => $progress->where('completed', 1)->count(),
+
+            'total_lessons' => $progress->count()
+
+        ]);
+
+    }
 }
