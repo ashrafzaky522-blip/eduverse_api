@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use App\Models\ChatMessage;
 
 class ChatController extends Controller
@@ -17,51 +19,78 @@ class ChatController extends Controller
         // حفظ رسالة المستخدم
         ChatMessage::create([
             'user_id' => $request->user()->id,
-            'sender' => 'user',
+            'sender'  => 'user',
             'message' => $request->message
         ]);
 
-        // رد البوت
-        $botReply = $this->getSmartReply($request->message);
+        $sessionId = Str::uuid()->toString();
 
-        // حفظ رد البوت
+        try {
+
+            $response = Http::timeout(90)
+                ->acceptJson()
+                ->post(env('AI_SERVER_URL').'/chat', [
+
+                    "student_id" => (string)$request->user()->id,
+
+                    "message" => $request->message,
+
+                    "course_id" => "GENERAL",
+
+                    "session_id" => $sessionId
+
+                ]);
+
+            if (!$response->successful()) {
+
+                return response()->json([
+                    "success" => false,
+                    "error" => $response->body()
+                ],500);
+
+            }
+
+            $data = $response->json();
+
+            $botReply = $data['reply'];
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                "success" => false,
+                "message" => $e->getMessage()
+            ],500);
+
+        }
+
+        // حفظ رد الـ AI
         ChatMessage::create([
             'user_id' => $request->user()->id,
-            'sender' => 'bot',
+            'sender'  => 'bot',
             'message' => $botReply
         ]);
 
         return response()->json([
-            'success' => true,
-            'reply' => $botReply
+
+            "success" => true,
+
+            "session_id" => $sessionId,
+
+            "reply" => $botReply
+
         ]);
     }
 
     public function history(Request $request)
     {
-        return response()->json(
-            ChatMessage::where('user_id', $request->user()->id)
+        return response()->json([
+
+            "success" => true,
+
+            "messages" => ChatMessage::where('user_id',$request->user()->id)
                 ->orderBy('created_at')
                 ->get()
-        );
-    }
 
-    private function getSmartReply($message)
-    {
-        $message = strtolower($message);
-
-        if (str_contains($message, 'hello')) {
-            return 'Hello! How can I help you?';
-        }
-
-        if (str_contains($message, 'course')) {
-            return 'You can view your courses from My Courses page.';
-        }
-
-        if (str_contains($message, 'assignment')) {
-            return 'Please check the assignments section.';
-        }
-
-        return 'I understand your question. Please provide more details.';
+        ]);
     }
 }
