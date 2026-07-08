@@ -19,7 +19,7 @@ class ChatController extends Controller
         // حفظ رسالة المستخدم
         ChatMessage::create([
             'user_id' => $request->user()->id,
-            'sender' => 'user',
+            'sender'  => 'user',
             'message' => $request->message
         ]);
 
@@ -29,9 +29,9 @@ class ChatController extends Controller
 
             $response = Http::timeout(90)
                 ->acceptJson()
-                ->post(env('AI_SERVER_URL') . '/chat', [
+                ->post(env('AI_SERVER_URL').'/chat', [
 
-                    "student_id" => (string) $request->user()->id,
+                    "student_id" => (string)$request->user()->id,
 
                     "message" => $request->message,
 
@@ -46,7 +46,7 @@ class ChatController extends Controller
                 return response()->json([
                     "success" => false,
                     "error" => $response->body()
-                ], 500);
+                ],500);
 
             }
 
@@ -59,21 +59,14 @@ class ChatController extends Controller
             return response()->json([
                 "success" => false,
                 "message" => $e->getMessage()
-            ], 500);
+            ],500);
 
         }
-
-
-        return response()->json([
-            'student_id' => $request->user()->id,
-            'name' => $request->user()->name,
-            'role' => $request->user()->role,
-        ]);
 
         // حفظ رد الـ AI
         ChatMessage::create([
             'user_id' => $request->user()->id,
-            'sender' => 'bot',
+            'sender'  => 'bot',
             'message' => $botReply
         ]);
 
@@ -94,7 +87,7 @@ class ChatController extends Controller
 
             "success" => true,
 
-            "messages" => ChatMessage::where('user_id', $request->user()->id)
+            "messages" => ChatMessage::where('user_id',$request->user()->id)
                 ->orderBy('created_at')
                 ->get()
 
